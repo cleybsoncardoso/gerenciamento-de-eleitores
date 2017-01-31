@@ -5,8 +5,11 @@
  */
 package View;
 
+import Controller.Controller;
 import java.io.File;
+import static java.lang.System.exit;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.filechooser.FileSystemView;
 
 /**
@@ -14,11 +17,14 @@ import javax.swing.filechooser.FileSystemView;
  * @author cleyb
  */
 public class Tela extends javax.swing.JFrame {
+    
+    public Controller controller;
 
     /**
      * Creates new form Tela
      */
     public Tela() {
+        this.controller = new Controller();
         initComponents();
         this.setExtendedState(this.getExtendedState() |this.MAXIMIZED_BOTH );
         
@@ -37,29 +43,20 @@ public class Tela extends javax.swing.JFrame {
     chooser  = new JFileChooser(start);
 
     //chooser.setCurrentDirectory(null);
-    chooser.setDialogTitle (
-
-    "escolhe ai");
+    chooser.setDialogTitle ( "Escolher Diretorio:");
     chooser.setFileSelectionMode (JFileChooser.DIRECTORIES_ONLY);
 
     //
     // disable the "All files" option.
     //
-    chooser.setAcceptAllFileFilterUsed (
-
-    false);
+    chooser.setAcceptAllFileFilterUsed (false);
     //    
     if (chooser.showOpenDialog ( 
         this.getContentPane()) == JFileChooser.APPROVE_OPTION) { 
-      System.out.println("getCurrentDirectory(): "
-                + chooser.getCurrentDirectory());
-        System.out.println("getSelectedFile() : "
-                + chooser.getSelectedFile());
-    }
-
-    
-        else {
-      System.out.println("No Selection ");
+        File unidade = chooser.getSelectedFile();
+        this.controller.setDiretorio(unidade.getAbsolutePath());
+    } else {
+        exit(1);
     }
 }
 

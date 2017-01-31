@@ -36,6 +36,16 @@ public class Controller {
     public boolean editar(){
         return false;
     }
+
+    public void setDiretorio(String diretorio) {
+        this.diretorio = diretorio;
+    }
+
+    public String getDiretorio() {
+        return diretorio;
+    }
+    
+    
     
     
 }

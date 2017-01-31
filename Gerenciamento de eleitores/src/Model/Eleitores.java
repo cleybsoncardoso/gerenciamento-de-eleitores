@@ -6,6 +6,8 @@
 package Model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
 
 /**
  *
@@ -13,6 +15,7 @@ import java.io.Serializable;
  */
 public class Eleitores implements Serializable{
     private String nome;
+    private Date nascimento;
     private String rua;
     private int numero;
     private String bairro;
@@ -20,9 +23,9 @@ public class Eleitores implements Serializable{
     private String UF;
     private String CEP;
     private String telefone;
-    private String comentario;
+    private ArrayList<String> comentario;
 
-    public Eleitores(String nome, String rua, int numero, String bairro, String cidade, String UF, String CEP, String telefone, String comentario) {
+    public Eleitores(String nome, String rua, int numero, String bairro, String cidade, String UF, String CEP, String telefone, ArrayList<String> comentario) {
         this.nome = nome;
         this.rua = rua;
         this.numero = numero;
@@ -98,11 +101,11 @@ public class Eleitores implements Serializable{
         this.telefone = telefone;
     }
 
-    public String getComentario() {
+    public ArrayList<String> getComentario() {
         return comentario;
     }
 
-    public void setComentario(String comentario) {
+    public void setComentario(ArrayList<String> comentario) {
         this.comentario = comentario;
     }
     

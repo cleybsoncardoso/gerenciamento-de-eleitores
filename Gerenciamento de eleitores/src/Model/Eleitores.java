@@ -13,28 +13,55 @@ import java.util.Date;
  *
  * @author ADM
  */
-public class Eleitores implements Serializable{
+public class Eleitores implements Serializable, Comparable<Eleitores>{
     private String nome;
     private Date nascimento;
     private String rua;
-    private int numero;
+    private String numero;
     private String bairro;
     private String cidade;
-    private String UF;
     private String CEP;
+    private String email;
     private String telefone;
     private ArrayList<String> comentario;
+    private String dateFormat;
 
-    public Eleitores(String nome, String rua, int numero, String bairro, String cidade, String UF, String CEP, String telefone, ArrayList<String> comentario) {
+    public Eleitores(String nome,Date nascimento, String rua, String numero, String bairro, String cidade, String CEP, String telefone, String email, String dateFormat) {
         this.nome = nome;
         this.rua = rua;
         this.numero = numero;
         this.bairro = bairro;
         this.cidade = cidade;
-        this.UF = UF;
         this.CEP = CEP;
         this.telefone = telefone;
-        this.comentario = comentario;
+        this.comentario = new ArrayList<String>();
+        this.email=email;
+        this.nascimento=nascimento;
+        this.dateFormat=dateFormat;
+    }
+
+    public String getDateFormat() {
+        return dateFormat;
+    }
+
+    public void setDateFormat(String dateFormat) {
+        this.dateFormat = dateFormat;
+    }
+
+    public Date getNascimento() {
+        return nascimento;
+    }
+
+    public void setNascimento(Date nascimento) {
+        this.nascimento = nascimento;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getNome() {
@@ -53,11 +80,11 @@ public class Eleitores implements Serializable{
         this.rua = rua;
     }
 
-    public int getNumero() {
+    public String getNumero() {
         return numero;
     }
 
-    public void setNumero(int numero) {
+    public void setNumero(String numero) {
         this.numero = numero;
     }
 
@@ -75,14 +102,6 @@ public class Eleitores implements Serializable{
 
     public void setCidade(String cidade) {
         this.cidade = cidade;
-    }
-
-    public String getUF() {
-        return UF;
-    }
-
-    public void setUF(String UF) {
-        this.UF = UF;
     }
 
     public String getCEP() {
@@ -107,6 +126,11 @@ public class Eleitores implements Serializable{
 
     public void setComentario(ArrayList<String> comentario) {
         this.comentario = comentario;
+    }
+
+    @Override
+    public int compareTo(Eleitores o) {
+        return nome.compareTo(o.getNome());
     }
     
 }

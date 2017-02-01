@@ -5,6 +5,7 @@
  */
 package gerenciamento.de.eleitores;
 
+import Controller.Controller;
 import View.Tela;
 
 /**
@@ -18,6 +19,8 @@ public class GerenciamentoDeEleitores {
      */
     public static void main(String[] args) {
         Tela tela = new Tela();
+ 
+        
     }
     
 }

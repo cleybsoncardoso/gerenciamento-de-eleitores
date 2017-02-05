@@ -313,7 +313,7 @@ public class AbrirEleitor extends javax.swing.JPanel {
         this.editar = !isEditar();
         if (!this.editar) {
             Eleitores editado = new Eleitores(jTextFieldNome.getText(),
-                    this.nascimento(), jTextFieldrua.getText(), jTextFieldn.getText(),
+                    jFormattedTextField3.getText(), jTextFieldrua.getText(), jTextFieldn.getText(),
                     jTextFieldbairro.getText(), jTextFieldcidade.getText(), jFormattedTextFieldcep.getText(),
                     jFormattedTextFieldtelefone.getText(), jTextFieldemail.getText(), jFormattedTextField3.getText());
             editado.setComentario(eleitor.getComentario());
@@ -325,16 +325,6 @@ public class AbrirEleitor extends javax.swing.JPanel {
         this.edicao();
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private Date nascimento() {
-        System.out.println(jFormattedTextField3.getText());
-        int y, m, d;
-        d = Integer.parseInt(jFormattedTextField3.getText().substring(0, 2));
-        m = Integer.parseInt(jFormattedTextField3.getText().substring(3, 5));
-        y = Integer.parseInt(jFormattedTextField3.getText().substring(6, 10));
-
-        Date data = new Date(y, m, d);
-        return data;
-    }
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:

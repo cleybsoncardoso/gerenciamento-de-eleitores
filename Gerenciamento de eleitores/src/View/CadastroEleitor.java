@@ -268,7 +268,7 @@ public class CadastroEleitor extends javax.swing.JPanel {
 
         if (!this.existe()) {
             Controller.getInstance().getEleitores().add(new Eleitores(jTextFieldNome.getText(), 
-                    this.nascimento(), jTextFieldrua.getText(), jTextFieldn.getText(), 
+                    jFormattedTextField3.getText(), jTextFieldrua.getText(), jTextFieldn.getText(), 
                     jTextFieldbairro.getText(), jTextFieldcidade.getText(), jFormattedTextFieldcep.getText(),
                     jFormattedTextFieldtelefone.getText(), jTextFieldemail.getText(), jFormattedTextField3.getText()));
             Arquivo.write(Controller.getInstance().getDiretorio(), logado, Controller.getInstance());
@@ -324,14 +324,4 @@ public class CadastroEleitor extends javax.swing.JPanel {
     private javax.swing.JTextField jTextFieldrua;
     // End of variables declaration//GEN-END:variables
 
-    private Date nascimento() {
-        System.out.println(jFormattedTextField3.getText());
-        int y, m, d;
-        d= Integer.parseInt(jFormattedTextField3.getText().substring(0, 2));
-        m = Integer.parseInt(jFormattedTextField3.getText().substring(3, 5));
-        y = Integer.parseInt(jFormattedTextField3.getText().substring(6, 10));
-        
-        Date data = new Date (y, m, d);
-         return data;
-    }
 }

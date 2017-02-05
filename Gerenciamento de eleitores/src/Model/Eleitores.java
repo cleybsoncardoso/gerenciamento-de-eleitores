@@ -15,7 +15,7 @@ import java.util.Date;
  */
 public class Eleitores implements Serializable, Comparable<Eleitores>{
     private String nome;
-    private Date nascimento;
+    private String nascimento;
     private String rua;
     private String numero;
     private String bairro;
@@ -25,8 +25,9 @@ public class Eleitores implements Serializable, Comparable<Eleitores>{
     private String telefone;
     private ArrayList<String> comentario;
     private String dateFormat;
+    private int d, m;
 
-    public Eleitores(String nome,Date nascimento, String rua, String numero, String bairro, String cidade, String CEP, String telefone, String email, String dateFormat) {
+    public Eleitores(String nome,String nascimento, String rua, String numero, String bairro, String cidade, String CEP, String telefone, String email, String dateFormat) {
         this.nome = nome;
         this.rua = rua;
         this.numero = numero;
@@ -38,6 +39,9 @@ public class Eleitores implements Serializable, Comparable<Eleitores>{
         this.email=email;
         this.nascimento=nascimento;
         this.dateFormat=dateFormat;
+        this.d=Integer.parseInt(this.nascimento.substring(0, 2));        
+        this.m=Integer.parseInt(this.nascimento.substring(3, 5));
+
     }
 
     public String getDateFormat() {
@@ -48,11 +52,11 @@ public class Eleitores implements Serializable, Comparable<Eleitores>{
         this.dateFormat = dateFormat;
     }
 
-    public Date getNascimento() {
+    public String getNascimento() {
         return nascimento;
     }
 
-    public void setNascimento(Date nascimento) {
+    public void setNascimento(String nascimento) {
         this.nascimento = nascimento;
     }
 
@@ -96,6 +100,15 @@ public class Eleitores implements Serializable, Comparable<Eleitores>{
         this.bairro = bairro;
     }
 
+    public int getDia() {
+        return d;
+    }
+
+    public int getMes() {
+        return m;
+    }
+
+    
     public String getCidade() {
         return cidade;
     }

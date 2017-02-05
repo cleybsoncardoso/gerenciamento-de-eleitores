@@ -27,7 +27,7 @@ public class GerenciarEleitores extends javax.swing.JPanel {
     public GerenciarEleitores(Logado logado) {
         initComponents();
         this.logado = logado;
-        this.logado.setTitle("Lista de Eleitores");
+        this.logado.setTitle("Lista de Pessoas cadastradas no sistema");
         this.atualizar();
     }
 
@@ -130,7 +130,7 @@ public class GerenciarEleitores extends javax.swing.JPanel {
             }
         }
         jTextField1.setText("");
-        this.logado.setContentPane(new AbrirEleitor(this.logado, selecionada));
+        this.logado.setContentPane(new AbrirEleitor(this.logado, selecionada, "lista"));
         this.logado.setVisible(true);
 
     }//GEN-LAST:event_jList1MouseClicked

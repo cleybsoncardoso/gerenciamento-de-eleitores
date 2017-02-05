@@ -122,7 +122,7 @@ public class CadastroUsuario extends javax.swing.JPanel {
         // TODO add your handling code here:
         if (jTextField1.getText().equals("") || jPasswordField1.getText().equals("")) {
             JOptionPane.showMessageDialog(logado, "Informe todo os dados", "Falta dados", JOptionPane.WARNING_MESSAGE);
-        } else if (!this.existente()) {
+        } else if (this.existente()) {
             JOptionPane.showMessageDialog(logado, "Conta ja existente", "Conta existe", JOptionPane.WARNING_MESSAGE);
         } else {
             Controller.getInstance().getUsuarios().add(new Usuario(jTextField1.getText(), jPasswordField1.getText()));

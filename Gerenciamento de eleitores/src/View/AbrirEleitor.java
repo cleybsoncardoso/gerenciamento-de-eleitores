@@ -23,13 +23,15 @@ public class AbrirEleitor extends javax.swing.JPanel {
     private Logado logado;
     private Eleitores eleitor;
     private boolean editar = false;
+    private String anterior;
 
     /**
      * Creates new form AbrirEleitor
      */
-    public AbrirEleitor(Logado logado, Eleitores eleitor) {
+    public AbrirEleitor(Logado logado, Eleitores eleitor, String anterior) {
         initComponents();
         this.logado = logado;
+        this.logado.setTitle("Abrir cadastro");
         this.eleitor = eleitor;
         jTextFieldNome.setText(eleitor.getNome());
         jFormattedTextField3.setText(eleitor.getDateFormat());
@@ -40,7 +42,9 @@ public class AbrirEleitor extends javax.swing.JPanel {
         jTextFieldemail.setText(eleitor.getEmail());
         jTextFieldn.setText(eleitor.getNumero());
         jTextFieldrua.setText(eleitor.getRua());
+        jLabel1.setText(eleitor.getNome());
 
+        this.anterior = anterior;
         this.edicao();
         this.atualizar();
 
@@ -84,7 +88,7 @@ public class AbrirEleitor extends javax.swing.JPanel {
 
         jLabel1.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Eleitor");
+        jLabel1.setText("Pessoa");
 
         jLabel9.setText("Nº");
 
@@ -169,7 +173,6 @@ public class AbrirEleitor extends javax.swing.JPanel {
         });
 
         jButton4.setText("Voltar");
-        jButton4.setActionCommand("Voltar");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
@@ -328,8 +331,14 @@ public class AbrirEleitor extends javax.swing.JPanel {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
-        this.logado.setContentPane(new GerenciarEleitores(logado));
-        logado.setVisible(true);
+        if (this.anterior.equals("lista")) {
+            this.logado.setContentPane(new GerenciarEleitores(logado));
+            logado.setVisible(true);
+        } else{
+            this.logado.setContentPane(new Aniversarios(logado, this.anterior));
+            logado.setVisible(true);
+        }
+
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -344,7 +353,6 @@ public class AbrirEleitor extends javax.swing.JPanel {
                 null,
                 "");
 
-
         if ((s != null) && (s.length() > 0)) {
             eleitor.getComentario().add(s);
             this.atualizar();
@@ -356,11 +364,11 @@ public class AbrirEleitor extends javax.swing.JPanel {
     private void jList1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MouseClicked
         // TODO add your handling code here:
         // TODO add your handling code here:
-        int n = JOptionPane.showConfirmDialog(logado,"Deseja deletar "+this.jList1.getSelectedValue() + " ?","Deletar OBS",JOptionPane.YES_NO_OPTION);
-        if(n == 0){
+        int n = JOptionPane.showConfirmDialog(logado, "Deseja deletar " + this.jList1.getSelectedValue() + " ?", "Deletar OBS", JOptionPane.YES_NO_OPTION);
+        if (n == 0) {
             String remove = null;
-            for(String atual:eleitor.getComentario()){
-                if(atual.equals(this.jList1.getSelectedValue())){
+            for (String atual : eleitor.getComentario()) {
+                if (atual.equals(this.jList1.getSelectedValue())) {
                     remove = atual;
                 }
             }

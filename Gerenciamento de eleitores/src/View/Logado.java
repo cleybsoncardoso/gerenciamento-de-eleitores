@@ -8,6 +8,7 @@ package View;
 import Controller.Controller;
 import Model.Arquivo;
 import static java.lang.System.exit;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -18,18 +19,17 @@ public class Logado extends javax.swing.JFrame {
     private Controller controller;
     private String diretorio;
     private Tela tela;
-    
-    
+
     /**
      * Creates new form Logado
      */
     public Logado(Tela tela) {
         initComponents();
+        this.setTitle("Bem vindo ao sistema de gerenciamento");
+        this.setResizable(false);
         this.tela = tela;
         this.setVisible(true);
     }
-    
- 
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -42,6 +42,7 @@ public class Logado extends javax.swing.JFrame {
 
         jDialog1 = new javax.swing.JDialog();
         jDialog2 = new javax.swing.JDialog();
+        jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
@@ -75,6 +76,10 @@ public class Logado extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jLabel1.setFont(new java.awt.Font("Arial Black", 1, 48)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Bem vindo ao sistema");
+
         jMenu1.setText("Sistema");
 
         jMenuItem3.setText("Usuario");
@@ -106,6 +111,11 @@ public class Logado extends javax.swing.JFrame {
         jMenu2.setText("Eleitores");
 
         jMenuItem4.setText("Aniversários");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem4);
 
         jMenuItem5.setText("Lista");
@@ -129,11 +139,14 @@ public class Logado extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1041, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1041, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 604, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(258, 258, 258)
+                .addComponent(jLabel1)
+                .addContainerGap(278, Short.MAX_VALUE))
         );
 
         pack();
@@ -169,10 +182,30 @@ public class Logado extends javax.swing.JFrame {
         this.setVisible(true);
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        // TODO add your handling code here:
+        Object[] possibilities = {"Janeiro", "Fevereiro", "Marco", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"};
+        String s = (String) JOptionPane.showInputDialog(this, "Escolha o mês que deseja",
+                "Escolher mês",
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                possibilities,
+                "ham");
+
+//If a string was returned, say so.
+        if ((s != null) && (s.length() > 0)) {
+            this.setContentPane(new Aniversarios(this, s));
+            this.setVisible(true);
+        }
+
+
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDialog jDialog1;
     private javax.swing.JDialog jDialog2;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;

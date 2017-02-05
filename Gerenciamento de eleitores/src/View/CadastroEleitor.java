@@ -24,7 +24,7 @@ public class CadastroEleitor extends javax.swing.JPanel {
     public CadastroEleitor(Logado logado) {
         initComponents();
         this.logado = logado;
-        this.logado.setTitle("Cadastrar Eleitor");
+        this.logado.setTitle("Novo cadastro");
     }
 
     /**

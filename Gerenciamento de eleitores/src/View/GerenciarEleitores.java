@@ -130,7 +130,7 @@ public class GerenciarEleitores extends javax.swing.JPanel {
             }
         }
         jTextField1.setText("");
-        this.logado.setContentPane(new AbrirEleitor(this.logado, selecionada, "lista"));
+        this.logado.setContentPane(new AbrirEleitor(this.logado, selecionada, "lista", false));
         this.logado.setVisible(true);
 
     }//GEN-LAST:event_jList1MouseClicked
@@ -145,6 +145,7 @@ public class GerenciarEleitores extends javax.swing.JPanel {
 
     private void atualizar() {
         ArrayList<Eleitores> ordenar = Controller.getInstance().getEleitores();
+       
         Collections.sort(ordenar);
         ArrayList<Eleitores> users = ordenar;
         String[] aux = new String[users.size()];

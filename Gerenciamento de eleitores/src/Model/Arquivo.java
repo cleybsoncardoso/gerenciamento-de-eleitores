@@ -37,6 +37,23 @@ public class Arquivo {
         }
 
     }
+    
+    
+    public static void writeSilencie(String diretorio, JFrame frame, Object salvar) {
+        try {//serializa e salva os usuarios
+            String auxiliar = diretorio + "luiz.date";
+            FileOutputStream fileOut = new FileOutputStream(auxiliar);
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(salvar);
+            out.close();
+            fileOut.close();
+        } catch (FileNotFoundException ex) {
+            JOptionPane.showMessageDialog(frame, "Arquivo não encontrado, criando arquivo para execução", "Error", JOptionPane.WARNING_MESSAGE);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(frame, "Erro ao salvar arquivo", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }
 
     public static Controller read(String diretorio, JFrame frame) {
         Controller aux;

@@ -9,6 +9,7 @@ import Controller.Controller;
 import Model.Arquivo;
 import Model.Eleitores;
 import java.util.Date;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -266,15 +267,27 @@ public class CadastroEleitor extends javax.swing.JPanel {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
 
-        if (!this.existe()) {
-            Controller.getInstance().getEleitores().add(new Eleitores(jTextFieldNome.getText(), 
-                    jFormattedTextField3.getText(), jTextFieldrua.getText(), jTextFieldn.getText(), 
-                    jTextFieldbairro.getText(), jTextFieldcidade.getText(), jFormattedTextFieldcep.getText(),
-                    jFormattedTextFieldtelefone.getText(), jTextFieldemail.getText(), jFormattedTextField3.getText()));
-            Arquivo.write(Controller.getInstance().getDiretorio(), logado, Controller.getInstance());
-            this.limpar();
-        }
+        if (jTextFieldNome.getText().equals("")) {
+            JOptionPane.showMessageDialog(logado,
+                    "Informe o nome para poder cadastrar a pessoa no sistema",
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+        } else {
 
+            if (!this.existe()) {
+                Controller.getInstance().getEleitores().add(new Eleitores(jTextFieldNome.getText(),
+                        jFormattedTextField3.getText(), jTextFieldrua.getText(), jTextFieldn.getText(),
+                        jTextFieldbairro.getText(), jTextFieldcidade.getText(), jFormattedTextFieldcep.getText(),
+                        jFormattedTextFieldtelefone.getText(), jTextFieldemail.getText(), jFormattedTextField3.getText()));
+                Arquivo.write(Controller.getInstance().getDiretorio(), logado, Controller.getInstance());
+                this.limpar();
+            } else {
+                JOptionPane.showMessageDialog(logado,
+                        "Pessoa já esta cadastrada no sistema",
+                        "Erro",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private boolean existe() {

@@ -12,6 +12,7 @@ import Model.Usuario;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -20,15 +21,15 @@ import javax.swing.JOptionPane;
  */
 public class AbrirEleitor extends javax.swing.JPanel {
 
-    private Logado logado;
+    private JFrame logado;
     private Eleitores eleitor;
-    private boolean editar = false;
+    private boolean editar = false, ativar;
     private String anterior;
 
     /**
      * Creates new form AbrirEleitor
      */
-    public AbrirEleitor(Logado logado, Eleitores eleitor, String anterior) {
+    public AbrirEleitor(JFrame logado, Eleitores eleitor, String anterior, boolean ativar) {
         initComponents();
         this.logado = logado;
         this.logado.setTitle("Abrir cadastro");
@@ -43,7 +44,11 @@ public class AbrirEleitor extends javax.swing.JPanel {
         jTextFieldn.setText(eleitor.getNumero());
         jTextFieldrua.setText(eleitor.getRua());
         jLabel1.setText(eleitor.getNome());
-
+        this.ativar = ativar;
+        if (ativar) {
+            jButton1.hide();
+            jButton3.hide();
+        }
         this.anterior = anterior;
         this.edicao();
         this.atualizar();
@@ -149,7 +154,7 @@ public class AbrirEleitor extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(jList1);
 
-        jLabel2.setText("Requerimentos");
+        jLabel2.setText("Observação");
 
         jButton1.setText("Excluir");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -158,7 +163,8 @@ public class AbrirEleitor extends javax.swing.JPanel {
             }
         });
 
-        jButton2.setText("Adicionar Requerimento");
+        jButton2.setText("Adicionar Observação");
+        jButton2.setActionCommand("Adicionar Observaçã");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -307,37 +313,55 @@ public class AbrirEleitor extends javax.swing.JPanel {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         Controller.getInstance().getEleitores().remove(eleitor);
-        this.logado.setContentPane(new GerenciarEleitores(logado));
+        this.logado.setContentPane(new GerenciarEleitores((Logado) logado));
         logado.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        this.editar = !isEditar();
-        if (!this.editar) {
-            Eleitores editado = new Eleitores(jTextFieldNome.getText(),
-                    jFormattedTextField3.getText(), jTextFieldrua.getText(), jTextFieldn.getText(),
-                    jTextFieldbairro.getText(), jTextFieldcidade.getText(), jFormattedTextFieldcep.getText(),
-                    jFormattedTextFieldtelefone.getText(), jTextFieldemail.getText(), jFormattedTextField3.getText());
-            editado.setComentario(eleitor.getComentario());
-            Controller.getInstance().getEleitores().remove(eleitor);
-            Controller.getInstance().getEleitores().add(editado);
-            Arquivo.write(Controller.getInstance().getDiretorio(), logado, Controller.getInstance());
-            eleitor = editado;
+        if (!jTextFieldNome.getText().equals("")) {
+            this.editar = !isEditar();
+            if (this.jButton3.getText().equals("Editar")) {
+                this.jButton3.setText("Salvar");
+            } else {
+                this.jButton3.setText("Editar");
+            }
+            if (!this.editar) {
+
+                Eleitores editado = new Eleitores(jTextFieldNome.getText(),
+                        jFormattedTextField3.getText(), jTextFieldrua.getText(), jTextFieldn.getText(),
+                        jTextFieldbairro.getText(), jTextFieldcidade.getText(), jFormattedTextFieldcep.getText(),
+                        jFormattedTextFieldtelefone.getText(), jTextFieldemail.getText(), jFormattedTextField3.getText());
+                editado.setComentario(eleitor.getComentario());
+                Controller.getInstance().getEleitores().remove(eleitor);
+                Controller.getInstance().getEleitores().add(editado);
+                Arquivo.write(Controller.getInstance().getDiretorio(), logado, Controller.getInstance());
+                eleitor = editado;
+            }
+            this.edicao();
+        } else {
+            JOptionPane.showMessageDialog(logado,
+                    "Informe o nome para poder salvar a edição da pessoa no sistema",
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
         }
-        this.edicao();
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
-        if (this.anterior.equals("lista")) {
-            this.logado.setContentPane(new GerenciarEleitores(logado));
-            logado.setVisible(true);
+        if(ativar){
+            logado.dispose();
         } else{
-            this.logado.setContentPane(new Aniversarios(logado, this.anterior));
+        if (this.anterior.equals("lista")) {
+            this.logado.setContentPane(new GerenciarEleitores((Logado) logado));
+            logado.setVisible(true);
+        } else {
+            this.logado.setContentPane(new Aniversarios((Logado) logado, this.anterior));
             logado.setVisible(true);
         }
+    }
 
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -364,18 +388,21 @@ public class AbrirEleitor extends javax.swing.JPanel {
     private void jList1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MouseClicked
         // TODO add your handling code here:
         // TODO add your handling code here:
-        int n = JOptionPane.showConfirmDialog(logado, "Deseja deletar " + this.jList1.getSelectedValue() + " ?", "Deletar OBS", JOptionPane.YES_NO_OPTION);
-        if (n == 0) {
-            String remove = null;
-            for (String atual : eleitor.getComentario()) {
-                if (atual.equals(this.jList1.getSelectedValue())) {
-                    remove = atual;
+        if (this.jList1.getSelectedValue() != null) {
+            int n = JOptionPane.showConfirmDialog(logado, "Deseja deletar " + this.jList1.getSelectedValue() + " ?", "Deletar OBS", JOptionPane.YES_NO_OPTION);
+            if (n == 0) {
+                String remove = null;
+                for (String atual : eleitor.getComentario()) {
+                    if (atual.equals(this.jList1.getSelectedValue())) {
+                        remove = atual;
+                    }
                 }
+                eleitor.getComentario().remove(remove);
+                this.atualizar();
+                Arquivo.write(Controller.getInstance().getDiretorio(), logado, Controller.getInstance());
             }
-            eleitor.getComentario().remove(remove);
-            this.atualizar();
-            Arquivo.write(Controller.getInstance().getDiretorio(), logado, Controller.getInstance());
         }
+
     }//GEN-LAST:event_jList1MouseClicked
 
     public boolean isEditar() {

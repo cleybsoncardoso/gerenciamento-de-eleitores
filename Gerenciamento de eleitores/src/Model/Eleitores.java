@@ -13,7 +13,8 @@ import java.util.Date;
  *
  * @author ADM
  */
-public class Eleitores implements Serializable, Comparable<Eleitores>{
+public class Eleitores implements Serializable, Comparable<Eleitores> {
+
     private String nome;
     private String nascimento;
     private String rua;
@@ -26,8 +27,11 @@ public class Eleitores implements Serializable, Comparable<Eleitores>{
     private ArrayList<String> comentario;
     private String dateFormat;
     private int d, m;
+    private boolean enviada;    
+    private boolean marcado;
 
-    public Eleitores(String nome,String nascimento, String rua, String numero, String bairro, String cidade, String CEP, String telefone, String email, String dateFormat) {
+
+    public Eleitores(String nome, String nascimento, String rua, String numero, String bairro, String cidade, String CEP, String telefone, String email, String dateFormat) {
         this.nome = nome;
         this.rua = rua;
         this.numero = numero;
@@ -36,11 +40,14 @@ public class Eleitores implements Serializable, Comparable<Eleitores>{
         this.CEP = CEP;
         this.telefone = telefone;
         this.comentario = new ArrayList<String>();
-        this.email=email;
-        this.nascimento=nascimento;
-        this.dateFormat=dateFormat;
-        this.d=Integer.parseInt(this.nascimento.substring(0, 2));        
-        this.m=Integer.parseInt(this.nascimento.substring(3, 5));
+        this.email = email;
+        this.nascimento = nascimento;
+        this.dateFormat = dateFormat;
+        if (!this.nascimento.equals("  /  /    ")) {
+            this.d = Integer.parseInt(this.nascimento.substring(0, 2));
+            this.m = Integer.parseInt(this.nascimento.substring(3, 5));
+        }
+        this.enviada=false;
 
     }
 
@@ -48,12 +55,30 @@ public class Eleitores implements Serializable, Comparable<Eleitores>{
         return dateFormat;
     }
 
+    public boolean isMarcado() {
+        return marcado;
+    }
+
+    public void setMarcado(boolean marcado) {
+        this.marcado = marcado;
+    }
+    
+    
+
     public void setDateFormat(String dateFormat) {
         this.dateFormat = dateFormat;
     }
 
     public String getNascimento() {
         return nascimento;
+    }
+
+    public boolean isEnviada() {
+        return enviada;
+    }
+
+    public void setEnviada(boolean enviada) {
+        this.enviada = enviada;
     }
 
     public void setNascimento(String nascimento) {
@@ -108,7 +133,6 @@ public class Eleitores implements Serializable, Comparable<Eleitores>{
         return m;
     }
 
-    
     public String getCidade() {
         return cidade;
     }
@@ -146,5 +170,6 @@ public class Eleitores implements Serializable, Comparable<Eleitores>{
         return nome.compareTo(o.getNome());
     }
     
-}
+    
 
+}

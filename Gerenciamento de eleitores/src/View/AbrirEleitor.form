@@ -272,7 +272,7 @@
     </Container>
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Requerimentos"/>
+        <Property name="text" type="java.lang.String" value="Observa&#xe7;&#xe3;o"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="jButton1">
@@ -285,7 +285,8 @@
     </Component>
     <Component class="javax.swing.JButton" name="jButton2">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Adicionar Requerimento"/>
+        <Property name="text" type="java.lang.String" value="Adicionar Observa&#xe7;&#xe3;o"/>
+        <Property name="actionCommand" type="java.lang.String" value="Adicionar Observa&#xe7;&#xe3;"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>

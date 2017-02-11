@@ -12,6 +12,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -74,6 +75,43 @@ public class Arquivo {
         }
         Controller.newInstance(new Controller());
         return new Controller();
+    }
+    
+    public static void writeMensagem(String diretorio, JFrame frame, Object salvar) {
+        try {//serializa e salva os usuarios
+            String auxiliar = diretorio + "mensagens.date";
+            FileOutputStream fileOut = new FileOutputStream(auxiliar);
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(salvar);
+            out.close();
+            fileOut.close();
+            JOptionPane.showMessageDialog(frame, "Arquivo criado com sucesso", "Sucesso", JOptionPane.PLAIN_MESSAGE);
+        } catch (FileNotFoundException ex) {
+            JOptionPane.showMessageDialog(frame, "Arquivo não encontrado, criando arquivo para execução", "Error", JOptionPane.WARNING_MESSAGE);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(frame, "Erro ao salvar arquivo", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }
+    
+     public static ArrayList<Mensagem> readMensagem(String diretorio, JFrame frame) {
+        ArrayList<Mensagem> aux;
+        try {//pega a serialização dos usuarios já cadastrados.
+            String auxiliar = diretorio + "luiz.date";
+            FileInputStream fileIn = new FileInputStream(auxiliar);
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            aux =  (ArrayList<Mensagem>) in.readObject();
+            in.close();
+            fileIn.close();
+            return aux;
+        } catch (FileNotFoundException ex) {
+            JOptionPane.showMessageDialog(frame, "Arquivo não encontrado, criando arquivo para execução", "Error", JOptionPane.WARNING_MESSAGE);
+        } catch (IOException | ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(frame, "Erro na leitura", "Error", JOptionPane.ERROR_MESSAGE);
+
+        }
+        Controller.newInstance(new Controller());
+        return new ArrayList<Mensagem>();
     }
     
 }

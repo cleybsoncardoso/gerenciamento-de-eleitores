@@ -6,14 +6,19 @@
 package View;
 
 import Controller.Controller;
+import static Controller.Controller.controller;
+import Controller.ControllerMensagem;
+import Model.CorpoMensagem;
 import Model.Eleitores;
 import Model.Mensagem;
+import static Model.Mensagem.enviarMensagem;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static javafx.css.StyleOrigin.USER_AGENT;
@@ -27,6 +32,7 @@ public class EnviarMensagem extends javax.swing.JPanel {
 
     private Logado logado;
     private int caracteresTelefones = 0;
+    private static EnviarMensagem enviarMensagem;
 
     /**
      * Creates new form EnviarMensagem
@@ -204,16 +210,24 @@ public class EnviarMensagem extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        if (this.valido()) {
+        ControllerMensagem cm = new ControllerMensagem(logado);
+        ArrayList<String> enviadas = new ArrayList();
+        
+        if (this.jTextField1.getText().length()>12 && this.valido()) {
             String erro = "";
             try {
                 String[] aux = jTextField1.getText().split(";");
                 for (int i = 0; i < aux.length; i++) {
-
-                    String resposta = Mensagem.enviarMensagem(aux[i] + ":" + this.jTextArea1.getText());
-                    System.out.println(resposta);
-                    if (!resposta.equals("000")) {
-                        erro = erro + aux[i] + ";";
+                    if (!enviadas.contains(aux[i])) {
+                        enviadas.add(aux[i]);
+                        String resposta = Mensagem.enviarMensagem(aux[i] + ":" + this.jTextArea1.getText());
+                        System.out.println(resposta);
+                        if (!resposta.equals("000")) {
+                            erro = erro + aux[i] + ";";
+                        } else {
+                            System.out.println(this.buscarNumero(aux[i], this.jTextArea1.getText()).getNome() + this.buscarNumero(aux[i], this.jTextArea1.getText()).getData());
+                            cm.addMensagem(this.buscarNumero(aux[i], this.jTextArea1.getText()));
+                        }
                     }
                 }
 
@@ -236,7 +250,7 @@ public class EnviarMensagem extends javax.swing.JPanel {
 
     private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
         // TODO add your handling code here:
-        
+
         String caracteres = "0987654321;";// lista de caracters que não devem ser aceitos
         if (!caracteres.contains(evt.getKeyChar() + "")) {// se o caracter que gerou o evento estiver não estiver na lista
             evt.consume();//aciona esse propriedade para eliminar a ação do evento
@@ -250,7 +264,9 @@ public class EnviarMensagem extends javax.swing.JPanel {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        
+        User l = new User(this);
+
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void sendGet() throws Exception {
@@ -274,6 +290,14 @@ public class EnviarMensagem extends javax.swing.JPanel {
     private javax.swing.JTextArea jTextArea2;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
+
+    public static void newInstance(EnviarMensagem enviarMensagemnova) {
+        enviarMensagem = enviarMensagemnova;
+    }
+
+    public static EnviarMensagem getInstance() {
+        return enviarMensagem;
+    }
 
     private boolean valido() {
         String[] aux = jTextField1.getText().split(";");
@@ -304,29 +328,56 @@ public class EnviarMensagem extends javax.swing.JPanel {
         return true;
     }
 
+    private CorpoMensagem buscarNumero(String numero, String msg) {
+        for (Eleitores verifica : Controller.getInstance().getEleitores()) {
+            if (verifica.getTelefone().contains(numero.substring(2, 4)) && verifica.getTelefone().contains(numero.substring(5, 9)) && verifica.getTelefone().contains(numero.substring(9, numero.length()))) {
+                return new CorpoMensagem(verifica.getNome(), verifica.getTelefone(), msg,  new Date().toString());
+
+            }
+        }
+
+        return new CorpoMensagem("", numero, msg, new Date().toString());
+    }
+
     private void atualizarNumero() {
-        if (caracteresTelefones != this.jTextField1.getText().length()) {
-            System.out.println(this.jTextField1.getText().length());
-            caracteresTelefones = this.jTextField1.getText().length();
+        if (caracteresTelefones != this.jTextField1.getText().length()) { //verifica se teve alteracao na quantidade de digitos
+            caracteresTelefones = this.jTextField1.getText().length(); //iguala telefones
             String[] aux = jTextField1.getText().split(";");
             String novaLista = "";
             for (int i = 0; i < aux.length; i++) {
-                if(aux[i].length()==13){
-                    
-                    for(Eleitores verifica : Controller.getInstance().getEleitores()){
-                        if(verifica.getTelefone().contains(aux[i].substring(2, 4)) && verifica.getTelefone().contains(aux[i].substring(5, 9)) && verifica.getTelefone().contains(aux[i].substring(9, aux[i].length()))){
-                            novaLista = novaLista +" " + verifica.getTelefone() + " (" + verifica.getNome() + ") ;";
-                            
+                if (aux[i].length() == 13) {
+
+                    for (Eleitores verifica : Controller.getInstance().getEleitores()) {
+                        if (verifica.getTelefone().contains(aux[i].substring(2, 4)) && verifica.getTelefone().contains(aux[i].substring(5, 9)) && verifica.getTelefone().contains(aux[i].substring(9, aux[i].length()))) {
+                            novaLista = novaLista + " " + verifica.getTelefone() + " (" + verifica.getNome() + ") ;";
+
                         }
                     }
                 }
             }
             this.jTextArea2.setText(novaLista);
         }
-        
+
     }
 
-    public static void addNumero(String numero) {
+    public void addNumero(String numero) {
+        System.out.println(numero);
+        String auxMsg = "";
+        String mod = "55" + numero.replace("(", "");
+        mod = mod.replace(")", "");
+        mod = mod.replace(" ", "");
+        mod = mod.replace("-", "");
+        auxMsg = auxMsg + mod + ";";
+        try {
+            if (this.jTextField1.getText().charAt(this.jTextField1.getText().length() - 1) == ';') {
+                this.jTextField1.setText(this.jTextField1.getText() + mod + ";");
+            } else {
+                this.jTextField1.setText(this.jTextField1.getText() + ";" + mod + ";");
+            }
+        } catch (StringIndexOutOfBoundsException e) {
+            this.jTextField1.setText(mod + ";");
+        }
+        this.atualizarNumero();
 
     }
 

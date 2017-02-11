@@ -53,7 +53,7 @@ public class Mensagem {
     }
     
     public static String enviarMensagem(String msg) throws MalformedURLException, IOException{
-        URL targetURL = new URL("http://localhost/teste.php");
+        URL targetURL = new URL("http://localhost/videoAulaAlura/mensagem.php");
         String data = "dados=" + msg;
         HttpURLConnection conn = (HttpURLConnection) targetURL.openConnection();
         conn.setDoOutput(true);

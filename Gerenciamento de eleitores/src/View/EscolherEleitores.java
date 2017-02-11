@@ -18,38 +18,29 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author cleyb
  */
-public class Aniversarios extends javax.swing.JPanel {
+public class EscolherEleitores extends javax.swing.JPanel {
 
-    private Logado logado;
-    private int mes;
-    private String mesString;
-    private ArrayList<Eleitores> auxEleitores;
-    private ArrayList<Eleitores> auxEleitoresAtual;
+    private User logado;
+    public ArrayList<Eleitores> auxSelecionados, todosEleitores;
     private DefaultTableModel model;
+    private EnviarMensagem enviar;
 
     /**
      * Creates new form Aniversarios
      */
-    public Aniversarios(Logado logado, String mes) {
+    public EscolherEleitores(EnviarMensagem enviar, User logado) {
         initComponents();
         this.logado = logado;
-        this.logado.setTitle("Lista de aniversariantes");
-        this.mesString = mes;
-        this.mes = this.converteMes(mes);
-        auxEleitores = new ArrayList<Eleitores>();
-        this.selecionarUsers();
-        auxEleitoresAtual = auxEleitores;
+        this.enviar = enviar;
+        this.logado.setTitle("Selecionar pessoas");
+        this.auxSelecionados = Controller.getInstance().getEleitores();
+        this.todosEleitores = auxSelecionados;
         model = (DefaultTableModel) jTable2.getModel();
-        for (Eleitores atual : auxEleitores) {
-
-            String auxMsg;
-            if (atual.isEnviada()) {
-                auxMsg = "ENVIADA";
-            } else {
-                auxMsg = "FALTA ENVIAR";
-            }
-            model.insertRow(model.getRowCount(), new Object[]{atual.getNome(), atual.getNascimento(), atual.getTelefone(), auxMsg, atual.isMarcado()});
+        for (Eleitores atual : auxSelecionados) {
+            atual.setMarcado(false);
+            model.insertRow(model.getRowCount(), new Object[]{atual.getNome(), atual.getNascimento(), atual.getTelefone(), false});
         }
+        this.todosEleitores = auxSelecionados;
     }
 
     /**
@@ -64,17 +55,14 @@ public class Aniversarios extends javax.swing.JPanel {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
         jButton9 = new javax.swing.JButton();
-        jButton10 = new javax.swing.JButton();
 
         jButton2.setText("Ordenar por Nome");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -97,10 +85,6 @@ public class Aniversarios extends javax.swing.JPanel {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Arial Black", 1, 36)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Aniversariantes do mês");
-
         jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 jTextField1KeyReleased(evt);
@@ -112,14 +96,14 @@ public class Aniversarios extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Nome", "Nascimento", "Telefone", "Enviada", "Selecionar"
+                "Nome", "Nascimento", "Telefone", "Selecionar"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.Boolean.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, true
+                false, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -151,17 +135,10 @@ public class Aniversarios extends javax.swing.JPanel {
             }
         });
 
-        jButton6.setText("Enviada");
+        jButton6.setText("Adicionar Selecionados");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton6ActionPerformed(evt);
-            }
-        });
-
-        jButton7.setText("Não Enviada");
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
             }
         });
 
@@ -179,18 +156,10 @@ public class Aniversarios extends javax.swing.JPanel {
             }
         });
 
-        jButton10.setText("Enviar Mensagem");
-        jButton10.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton10ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1015, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -201,76 +170,66 @@ public class Aniversarios extends javax.swing.JPanel {
                             .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jButton9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(42, 42, 42)
+                        .addGap(129, 129, 129)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(43, 43, 43)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(104, 104, 104)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton8, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
-                            .addComponent(jButton10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(46, 46, 46)
-                        .addComponent(jButton4)))
+                            .addComponent(jButton8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
+                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(11, 11, 11)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 397, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
+                                .addGap(11, 11, 11)
                                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(jButton8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(10, 10, 10)
+                                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
-                                    .addComponent(jButton10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(84, 84, 84)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(76, Short.MAX_VALUE))
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(11, 11, 11)
+                                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(75, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
 
-        Collections.sort(auxEleitores);
-        this.add(auxEleitores);
+        Collections.sort(auxSelecionados);
+        this.add(auxSelecionados);
 
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
 
-        Eleitores[] ordenar = new Eleitores[auxEleitores.size()];
+        Eleitores[] ordenar = new Eleitores[auxSelecionados.size()];
 
-        for (int i = 0; i < auxEleitores.size(); i++) {
-            ordenar[i] = auxEleitores.get(i);
+        for (int i = 0; i < auxSelecionados.size(); i++) {
+            ordenar[i] = auxSelecionados.get(i);
         }
 
         for (int i = 0; i < ordenar.length; i++) {
@@ -283,11 +242,11 @@ public class Aniversarios extends javax.swing.JPanel {
             }
         }
 
-        auxEleitores = new ArrayList<Eleitores>();
+        auxSelecionados = new ArrayList<Eleitores>();
         for (int i = 0; i < ordenar.length; i++) {
-            auxEleitores.add(ordenar[i]);
+            auxSelecionados.add(ordenar[i]);
         }
-        this.add(auxEleitores);
+        this.add(auxSelecionados);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -298,72 +257,28 @@ public class Aniversarios extends javax.swing.JPanel {
                     "Erro",
                     JOptionPane.ERROR_MESSAGE);
         } else {
-            new User(auxEleitores.get(jTable2.getSelectedRow()));
+            new User(auxSelecionados.get(jTable2.getSelectedRow()));
         }
 
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
-        boolean nenhum = true;
-        for (int i = 0; i < auxEleitores.size(); i++) {
-            if (jTable2.getModel().getValueAt(i, 4).equals(true)) {
-                nenhum = false;
-                auxEleitores.get(i).setEnviada(true);
-                for (Eleitores atual : Controller.getInstance().getEleitores()) {
-                    if (atual.getNome().equals(auxEleitores.get(i).getNome())) {
-                        atual.setEnviada(true);
-                    }
-                }
+        for (Eleitores atual : todosEleitores) {
+            if (atual.isMarcado()) {
+                EnviarMensagem.getInstance().addNumero(atual.getTelefone());
             }
         }
-        if(nenhum){
-            JOptionPane.showMessageDialog(logado,
-                    "Nenhuma pessoa foi marcada",
-                    "Marcar pessoas",
-                    JOptionPane.ERROR_MESSAGE);
-        }else{
-            this.add(auxEleitores);
-        }
-        
-
+        this.logado.dispose();
     }//GEN-LAST:event_jButton6ActionPerformed
-
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        // TODO add your handling code here:
-        
-        boolean nenhum = true;
-        
-        for (int i = 0; i < auxEleitores.size(); i++) {
-            if (jTable2.getModel().getValueAt(i, 4).equals(true)) {
-                nenhum = false;
-                auxEleitores.get(i).setEnviada(false);
-                for (Eleitores atual : Controller.getInstance().getEleitores()) {
-                    if (atual.getNome().equals(auxEleitores.get(i).getNome())) {
-                        atual.setEnviada(false);
-                    }
-                }
-            }
-        }
-        if(nenhum){
-            JOptionPane.showMessageDialog(logado,
-                    "Nenhuma pessoa foi marcada",
-                    "Marcar pessoas",
-                    JOptionPane.ERROR_MESSAGE);
-        }else{
-            this.add(auxEleitores);
-        }
-
-
-    }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         // TODO add your handling code here:
 
-        for (int i = 0; i < auxEleitores.size(); i++) {
+        for (int i = 0; i < auxSelecionados.size(); i++) {
             if (jTable2.getModel().getValueAt(i, 4).equals(true)) {
-                auxEleitores.get(i).setEnviada(false);
-                new User(auxEleitores.get(i));
+                auxSelecionados.get(i).setEnviada(false);
+                new User(auxSelecionados.get(i));
             }
         }
 
@@ -372,29 +287,32 @@ public class Aniversarios extends javax.swing.JPanel {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
-        for (Eleitores atual : auxEleitoresAtual) {
+        for (Eleitores atual : auxSelecionados) {
             atual.setMarcado(true);
         }
 
-        this.add(auxEleitoresAtual);
+        this.add(auxSelecionados);
 
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        for (Eleitores atual : auxEleitoresAtual) {
+        for (Eleitores atual : auxSelecionados) {
             atual.setMarcado(false);
         }
 
-        this.add(auxEleitoresAtual);
+        this.add(auxSelecionados);
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTable2MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseReleased
         // TODO add your handling code here:
 
-        for (int i = 0; i < auxEleitores.size(); i++) {
-            auxEleitores.get(i).setMarcado((boolean) jTable2.getModel().getValueAt(i, 4));
+        for (int i = 0; i < auxSelecionados.size(); i++) {
+            boolean v = (boolean) jTable2.getModel().getValueAt(i, 3);
+            auxSelecionados.get(i).setMarcado(v);
+            this.todosEleitores.get(this.todosEleitores.indexOf(auxSelecionados.get(i))).setMarcado(v);
+
         }
 
     }//GEN-LAST:event_jTable2MouseReleased
@@ -403,7 +321,7 @@ public class Aniversarios extends javax.swing.JPanel {
         // TODO add your handling code here:
 
         ArrayList<Eleitores> auxSearch = new ArrayList<Eleitores>();
-        for (Eleitores userAtual : auxEleitores) {
+        for (Eleitores userAtual : todosEleitores) {
             if (userAtual.getNome().contains(this.jTextField1.getText()) || String.valueOf(userAtual.getDia()).contains(this.jTextField1.getText())) {
                 auxSearch.add(userAtual);
             }
@@ -414,11 +332,11 @@ public class Aniversarios extends javax.swing.JPanel {
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
         // TODO add your handling code here:
-        
-        Eleitores[] ordenar = new Eleitores[auxEleitores.size()];
 
-        for (int i = 0; i < auxEleitores.size(); i++) {
-            ordenar[i] = auxEleitores.get(i);
+        Eleitores[] ordenar = new Eleitores[auxSelecionados.size()];
+
+        for (int i = 0; i < auxSelecionados.size(); i++) {
+            ordenar[i] = auxSelecionados.get(i);
         }
 
         for (int i = 0; i < ordenar.length; i++) {
@@ -431,51 +349,31 @@ public class Aniversarios extends javax.swing.JPanel {
             }
         }
 
-        auxEleitores = new ArrayList<Eleitores>();
+        auxSelecionados = new ArrayList<Eleitores>();
         for (int i = 0; i < ordenar.length; i++) {
-            auxEleitores.add(ordenar[i]);
+            auxSelecionados.add(ordenar[i]);
         }
-        this.add(auxEleitores);
-        
-    }//GEN-LAST:event_jButton9ActionPerformed
+        this.add(auxSelecionados);
 
-    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
-        // TODO add your handling code here:
-        String auxMsg = "";
-        for (Eleitores atual : auxEleitoresAtual) {
-            if(atual.isMarcado()){
-                String mod = "55" + atual.getTelefone().replace("(", "");
-                mod = mod.replace(")", "");
-                mod = mod.replace(" ", "");
-                mod = mod.replace("-", "");
-                auxMsg= auxMsg+ mod+";";
-            }
-        }
-        EnviarMensagem.newInstance(new EnviarMensagem(auxMsg, logado));
-        logado.setContentPane(EnviarMensagem.getInstance());
-        logado.setVisible(true);
-    }//GEN-LAST:event_jButton10ActionPerformed
+    }//GEN-LAST:event_jButton9ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable2;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 
     private void add(ArrayList<Eleitores> aux) {
-        for (int i = auxEleitoresAtual.size() - 1; i >= 0; i--) {
+        for (int i = auxSelecionados.size() - 1; i >= 0; i--) {
 
             model.removeRow(i);
 
@@ -487,47 +385,10 @@ public class Aniversarios extends javax.swing.JPanel {
             } else {
                 auxMsg = "FALTA ENVIAR";
             }
-            model.insertRow(model.getRowCount(), new Object[]{atual.getNome(), atual.getNascimento(), atual.getTelefone(), auxMsg, atual.isMarcado()});
+            model.insertRow(model.getRowCount(), new Object[]{atual.getNome(), atual.getNascimento(), atual.getTelefone(), atual.isMarcado()});
 
         }
-        auxEleitoresAtual = aux;
-        Arquivo.writeSilencie(Controller.getInstance().getDiretorio(), logado, Controller.getInstance());
+        auxSelecionados = aux;
     }
 
-    private int converteMes(String mes) {
-        if (mes.equals("Janeiro")) {
-            return 1;
-        } else if (mes.equals("Fevereiro")) {
-            return 2;
-        } else if (mes.equals("Marco")) {
-            return 3;
-        } else if (mes.equals("Abril")) {
-            return 4;
-        } else if (mes.equals("Maio")) {
-            return 5;
-        } else if (mes.equals("Junho")) {
-            return 6;
-        } else if (mes.equals("Julho")) {
-            return 7;
-        } else if (mes.equals("Agosto")) {
-            return 8;
-        } else if (mes.equals("Setembro")) {
-            return 9;
-        } else if (mes.equals("Outubro")) {
-            return 10;
-        } else if (mes.equals("Novembro")) {
-            return 11;
-        } else {
-            return 12;
-        }
-    }
-
-    private void selecionarUsers() {
-        for (Eleitores atual : Controller.getInstance().getEleitores()) {
-            if (atual.getMes() == mes) {
-                atual.setMarcado(false);
-                auxEleitores.add(atual);
-            }
-        }
-    }
 }

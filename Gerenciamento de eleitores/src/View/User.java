@@ -5,6 +5,7 @@
  */
 package View;
 
+import Model.CorpoMensagem;
 import Model.Eleitores;
 
 /**
@@ -23,6 +24,25 @@ public class User extends javax.swing.JFrame {
         this.setContentPane(new AbrirEleitor(this, eleitor, "abril", true));
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         this.setVisible(true);
+    }
+    
+    public User(CorpoMensagem mensagem) {
+        initComponents();
+        this.setTitle("Abrir Mensagem");
+        this.setResizable(false);
+        this.setContentPane(new AbrirMensagens(mensagem));
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        this.setVisible(true);
+    }
+
+    User(EnviarMensagem aThis) {
+        initComponents();
+        this.setTitle("Escolher Pessoas");
+        this.setResizable(false);
+        this.setContentPane(new EscolherEleitores(aThis, this));
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        this.setVisible(true);
+        
     }
 
     /**

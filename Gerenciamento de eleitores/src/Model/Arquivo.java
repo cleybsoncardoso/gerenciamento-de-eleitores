@@ -85,7 +85,6 @@ public class Arquivo {
             out.writeObject(salvar);
             out.close();
             fileOut.close();
-            JOptionPane.showMessageDialog(frame, "Arquivo criado com sucesso", "Sucesso", JOptionPane.PLAIN_MESSAGE);
         } catch (FileNotFoundException ex) {
             JOptionPane.showMessageDialog(frame, "Arquivo não encontrado, criando arquivo para execução", "Error", JOptionPane.WARNING_MESSAGE);
         } catch (IOException ex) {
@@ -94,15 +93,16 @@ public class Arquivo {
 
     }
     
-     public static ArrayList<Mensagem> readMensagem(String diretorio, JFrame frame) {
-        ArrayList<Mensagem> aux;
+     public static ArrayList<CorpoMensagem> readMensagem(String diretorio, JFrame frame) {
+        ArrayList<CorpoMensagem> aux;
         try {//pega a serialização dos usuarios já cadastrados.
-            String auxiliar = diretorio + "luiz.date";
+            String auxiliar = diretorio + "mensagens.date";
             FileInputStream fileIn = new FileInputStream(auxiliar);
             ObjectInputStream in = new ObjectInputStream(fileIn);
-            aux =  (ArrayList<Mensagem>) in.readObject();
+            aux =  (ArrayList<CorpoMensagem>) in.readObject();
             in.close();
             fileIn.close();
+            System.out.println("Model.Arquivo.readMensagem()");
             return aux;
         } catch (FileNotFoundException ex) {
             JOptionPane.showMessageDialog(frame, "Arquivo não encontrado, criando arquivo para execução", "Error", JOptionPane.WARNING_MESSAGE);
@@ -111,7 +111,7 @@ public class Arquivo {
 
         }
         Controller.newInstance(new Controller());
-        return new ArrayList<Mensagem>();
+        return new ArrayList<CorpoMensagem>();
     }
     
 }

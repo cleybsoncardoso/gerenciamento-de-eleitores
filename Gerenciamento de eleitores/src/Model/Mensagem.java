@@ -22,12 +22,12 @@ import javax.net.ssl.HttpsURLConnection;
  */
 public class Mensagem {
     
-    private static final String USER_AGENT = "Mozilla/5.0";
+    private static final String USER_AGENT = "Mozilla/5.0", token = "817Bf6", credenciamento = "8348AC43472F323FA0AB0C0210E36C69F066D282";
     
     public static String sendGet() throws Exception {
         
 
-        String url = "http://localhost/videoAulaAlura/credito.php";
+        String url = "http://localhost/credito.php?saldo=Credencial=" + credenciamento + "&Token=" + token;
 
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -53,8 +53,8 @@ public class Mensagem {
     }
     
     public static String enviarMensagem(String msg) throws MalformedURLException, IOException{
-        URL targetURL = new URL("http://localhost/videoAulaAlura/mensagem.php");
-        String data = "dados=" + msg;
+        URL targetURL = new URL("http://localhost/mensagem.php");
+        String data = "dados=" + msg + ":" + token + ":" + credenciamento;
         HttpURLConnection conn = (HttpURLConnection) targetURL.openConnection();
         conn.setDoOutput(true);
         conn.setInstanceFollowRedirects(true);

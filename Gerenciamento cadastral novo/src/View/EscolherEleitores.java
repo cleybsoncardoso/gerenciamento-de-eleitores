@@ -266,10 +266,10 @@ public class EscolherEleitores extends javax.swing.JPanel {
         // TODO add your handling code here:
         for (EleitoresNovo atual : todosEleitores) {
             if (atual.isMarcado()) {
-                if (!atual.getCelular1().equals("(  )       -    ") || !atual.getCelular1().equals("")) {
+                if (!atual.getCelular1().equals("(  )       -    ") && !atual.getCelular1().equals("")) {
                     EnviarMensagem.getInstance().addNumero(atual.getCelular1());
                 }
-                if (!atual.getCelular2().equals("(  )       -    ") || !atual.getCelular2().equals("")) {
+                if (!atual.getCelular2().equals("(  )       -    ") && !atual.getCelular2().equals("")) {
                     EnviarMensagem.getInstance().addNumero(atual.getCelular2());
                 }
             }

@@ -54,7 +54,7 @@ public class Arquivo {
     public static Controller read(String diretorio) throws FileNotFoundException, IOException, ClassNotFoundException {
         Controller aux;
         
-            String auxiliar = "C:\\Users\\cleyb\\Desktopluiz.date";
+            String auxiliar = "E:\\luiz.date";
             FileInputStream fileIn = new FileInputStream(auxiliar);
             ObjectInputStream in = new ObjectInputStream(fileIn);
             aux = (Controller) in.readObject();

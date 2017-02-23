@@ -34,8 +34,8 @@ public class CopiarClasses {
                 System.out.println(atual.getNome());
                 aux.add(new EleitoresNovo(atual.getNome(), atual.getNascimento(), atual.getRua(), atual.getNumero(), atual.getBairro(), atual.getCidade(), atual.getCEP(), "", atual.getTelefone(), "", atual.getEmail(), atual.getDateFormat()));
             }
-            Arquivo.write("C:\\Users\\cleyb\\Desktop\\pessoas.date", aux);
-            Arquivo.write("C:\\Users\\cleyb\\Desktop\\usuarios.date", Controller.getInstance().getUsuarios());
+            Arquivo.write("E:\\pessoas.date", aux);
+            Arquivo.write("E:\\usuarios.date", Controller.getInstance().getUsuarios());
  
             
         } catch (IOException ex) {

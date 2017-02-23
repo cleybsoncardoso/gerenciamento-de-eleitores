@@ -22,13 +22,13 @@ import javax.net.ssl.HttpsURLConnection;
  */
 public class Mensagem {
     
-    private static final String USER_AGENT = "Mozilla/5.0", token = "817Bf6", credenciamento = "8348AC43472F323FA0AB0C0210E36C69F066D282";
+    private static final String USER_AGENT = "Mozilla/5.0", token = "594A17", credenciamento = "A36CF10219AD5CD5279F0F7C7D8BE196B1043A93";
     
     public static String sendGet() throws Exception {
         
 
-        String url = "http://localhost/credito.php?saldo=Credencial=" + credenciamento + "&Token=" + token;
-
+        String url = "http://localhost/credito.php?saldo="+ credenciamento + ":" + "594A17";
+        System.out.println(url);
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 

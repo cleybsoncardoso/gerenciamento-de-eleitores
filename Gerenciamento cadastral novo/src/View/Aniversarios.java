@@ -432,14 +432,14 @@ public class Aniversarios extends javax.swing.JPanel {
         String auxMsg = "";
         for (EleitoresNovo atual : auxEleitoresAtual) {
             if (atual.isMarcado()) {
-                if (!atual.getCelular1().equals("(  )       -    ") || !atual.getCelular1().equals("")) {
+                if (!atual.getCelular1().equals("(  )       -    ") && !atual.getCelular1().equals("")) {
                     String mod = "55" + atual.getCelular1().replace("(", "");
                     mod = mod.replace(")", "");
                     mod = mod.replace(" ", "");
                     mod = mod.replace("-", "");
                     auxMsg = auxMsg + mod + ";";
                 }
-                if (!atual.getCelular2().equals("(  )       -    ") || !atual.getCelular2().equals("")) {
+                if (!atual.getCelular2().equals("(  )       -    ") && !atual.getCelular2().equals("")) {
                     String mod = "55" + atual.getCelular2().replace("(", "");
                     mod = mod.replace(")", "");
                     mod = mod.replace(" ", "");
